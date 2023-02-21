@@ -27,26 +27,34 @@ function searchCountries(e) {
     return;
   }
 
-  fetchCountries(nameCountry).then(data => {
-    if (data.length > 10) {
+  fetchCountries(nameCountry)
+    .then(data => {
+      if (data.length > 10) {
+        removeMarkup(listCountriesEl, cardCountryEl);
+
+        Notify.info(
+          'Too many matches found. Please enter a more specific name.'
+        );
+        return;
+      }
+
+      if (data.length >= 2) {
+        removeMarkup(cardCountryEl);
+        const markup = createListCountriesMarkup(data);
+        addMarkup(listCountriesEl, markup);
+
+        return;
+      }
+
+      removeMarkup(listCountriesEl);
+      const markup = createInfoCardCountryMarkup(data);
+      addMarkup(cardCountryEl, markup);
+    })
+    .catch(() => {
       removeMarkup(listCountriesEl, cardCountryEl);
 
-      Notify.info('Too many matches found. Please enter a more specific name.');
-      return;
-    }
-
-    if (data.length >= 2) {
-      removeMarkup(cardCountryEl);
-      const markup = createListCountriesMarkup(data);
-      addMarkup(listCountriesEl, markup);
-
-      return;
-    }
-
-    removeMarkup(listCountriesEl);
-    const markup = createInfoCardCountryMarkup(data);
-    addMarkup(cardCountryEl, markup);
-  });
+      Notify.failure('Oops, there is no country with that name');
+    });
 }
 
 function createListCountriesMarkup(dataCountries) {
@@ -88,7 +96,7 @@ function createInfoCardCountryMarkup([dataCountry]) {
             </li>
             <li class="country-card-info-list-item">
               <b>Languages: </b>
-              ${{ ...dataCountry.languages }}
+              ${Object.values(dataCountry.languages).join(', ')}
             </li>
           </ul>
         `;
