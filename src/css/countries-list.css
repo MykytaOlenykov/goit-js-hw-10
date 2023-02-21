@@ -1,0 +1,33 @@
+.country-list-styles-none {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.country-list-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.country-list-item:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.country-list-thumb {
+  width: 30px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.country-list-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+}
+
+.country-list-name {
+  margin: 0;
+}
